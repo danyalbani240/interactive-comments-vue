@@ -1,13 +1,13 @@
 <template>
-	<div class="flex items-center bg-white rounded">
+	<div class="flex items-center bg-white rounded my-3 max-w-3xl w-11/12">
 		<div
-			class="bg-purple-50 w-20 h-20 ml-2 rounded hidden md:flex flex-col items-center justify-between"
+			class="bg-purple-50 w-20 h-20 ml-2 py-2 rounded hidden md:flex flex-col items-center justify-between"
 		>
-			<img src="./images/icon-plus.svg" class="cursor-pointer" alt="" />
+			<img src="../assets/images/icon-plus.svg" class="cursor-pointer" />
 			<span class="text-purple-700 font-bold">{{
 				commentData.score
 			}}</span>
-			<img class="cursor-pointer" src="./images/icon-minus.svg" alt="" />
+			<img class="cursor-pointer" src="../assets/images/icon-minus.svg" />
 		</div>
 		<div
 			class="bg-white flex flex-col justify-evenly h-60 md:h-40 rounded px-5 max-w-3xl"
@@ -27,7 +27,7 @@
 					class="text-purple-700 cursor-pointer flex-1 text-right hidden md:block reply-el"
 				>
 					<img
-						src="./images/icon-reply.svg"
+						src="../assets/images/icon-reply.svg"
 						class="w-4 mr-1 inline-block align-middle"
 						alt="reply"
 					/><span class="inline-block font-bold">Reply</span>
@@ -39,7 +39,7 @@
 					class="bg-purple-50 w-20 h-9 rounded flex items-center justify-evenly"
 				>
 					<img
-						src="./images/icon-plus.svg"
+						src="../assets/images/icon-plus.svg"
 						class="cursor-pointer"
 						alt=""
 					/>
@@ -48,13 +48,13 @@
 					}}</span>
 					<img
 						class="cursor-pointer"
-						src="./images/icon-minus.svg"
+						src="../assets/images/icon-minus.svg"
 						alt=""
 					/>
 				</div>
 				<div class="text-purple-700 cursor-pointer reply-mobile">
 					<img
-						src="./images/icon-reply.svg"
+						src="../assets/images/icon-reply.svg"
 						class="w-4 mr-1 inline-block align-middle"
 						alt="reply"
 					/><span class="inline-block font-bold">Reply</span>
