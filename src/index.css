@@ -1,3 +1,37 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+body{
+    background-color: hsl(228, 33%, 97%);
+}
+@keyframes delete {
+    0%{
+        opacity: 1;
+        position: relative;
+        top: 0;
+    }
+    100%{
+        opacity: 0;
+        position: relative;
+        top: 50px;
+    }
+}
+.delete-animation{
+    animation-name: delete;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+@keyframes pop-swirl {
+    0% {
+      transform: scale(0) rotate(360deg);
+    }
+    60% {
+      transform: scale(0.8) rotate(-10deg);
+    }
+    100% {
+      transform: scale(1) rotate(0deg);
+    }
+  }
+  .modal-container{
+    background-color: rgba(0, 0, 0, 0.674);
+  }
