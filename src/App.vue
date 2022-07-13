@@ -4,6 +4,7 @@
 			v-for="comment in comments"
 			:commentData="comment"
 			:key="comment.id"
+			@addNewReply="addNewReply"
 		/>
 	</div>
 	<div
@@ -52,6 +53,19 @@ export default {
 			.then((res) => {
 				this.comments = Object.values(res);
 			});
+	},
+	methods: {
+		addNewReply(commentId, replyData) {
+			let currentCommentIndex = this.comments.findIndex(
+				(comment) => comment.id === commentId
+			);
+
+			if (this.comments[currentCommentIndex].replies !== undefined) {
+				this.comments[currentCommentIndex].replies.push(replyData);
+			} else {
+				this.comments[currentCommentIndex]["replies"] = [replyData];
+			}
+		},
 	},
 };
 </script>
