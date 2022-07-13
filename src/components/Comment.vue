@@ -31,13 +31,22 @@
 					<span class="text-sm">{{ commentData.createdAt }}</span>
 					<div
 						@click="handleReply('desktop')"
-						class="text-purple-700 cursor-pointer flex-1 text-right hidden md:block reply-el"
+						class="cursor-pointer flex-1 text-right hidden md:block reply-el"
+						:class="{
+							'text-purple-700': !show,
+							'text-red-400': show,
+						}"
 					>
 						<img
 							src="../assets/images/icon-reply.svg"
 							class="w-4 mr-1 inline-block align-middle"
 							alt="reply"
-						/><span class="inline-block font-bold">Reply</span>
+							:class="{
+								hidden: show,
+							}"
+						/><span class="inline-block font-bold">{{
+							show === true ? "Cancel" : "Reply"
+						}}</span>
 					</div>
 				</div>
 				<p class="mt-3 text-gray-500 md:mt-0">
@@ -71,7 +80,31 @@
 				</div>
 			</div>
 		</div>
-		<div v-if="show" class=""></div>
+		<div
+			v-if="show"
+			class="bg-white py-4 mx-auto rounded flex w-full mt-5 items-center max-w-3xl"
+		>
+			<img
+				class="w-9 h-9 mx-auto"
+				src="../assets/images/avatars/image-juliusomo.png"
+				alt="account owner image"
+			/>
+			<textarea
+				name="reply"
+				class="rounded border-2 w-10/12 mx-auto border-r-gray-400 resize-none outline-none px-2 focus:border-gray-600 py-2"
+				data-test="reply-value"
+				id=""
+				cols="20"
+				rows="4"
+				v-model="replyText"
+			></textarea>
+
+			<button
+				class="text-white bg-purple-700 rounded px-4 py-2 text-sm h-10 font-bold mx-auto send-button"
+			>
+				Send
+			</button>
+		</div>
 		<div
 			v-if="commentData.replies !== undefined"
 			class="flex flex-col comments-container border-l-2 border-gray-300 pl-5 mt-5"
@@ -92,6 +125,7 @@ export default {
 	data() {
 		return {
 			show: false,
+			replyText: `${"@" + this.commentData.user.username.trim() + ","}`,
 		};
 	},
 	props: {
