@@ -80,7 +80,8 @@
 				</div>
 			</div>
 		</div>
-		<div
+		<form
+			@submit.prevent="handleSubmit"
 			v-if="show"
 			class="bg-white py-4 mx-auto rounded flex w-full mt-5 items-center max-w-3xl"
 		>
@@ -104,7 +105,7 @@
 			>
 				Send
 			</button>
-		</div>
+		</form>
 		<div
 			v-if="commentData.replies !== undefined"
 			class="flex flex-col comments-container border-l-2 border-gray-300 pl-5 mt-5"
@@ -134,9 +135,43 @@ export default {
 			required: true,
 		},
 	},
+	computed: {
+		pureReplyData() {
+			let text = this.replyText.split(",");
+			text.shift();
+
+			const replyObject = {
+				content: text.join(" "),
+				createdAt: "1 day ago",
+				replyingTo: this.commentData.user.username,
+				score: 0,
+				user: {
+					image: {
+						png: "https://i.ibb.co/jWJfdwM/image-juliusomo.png",
+						webp: "https://i.ibb.co/cDyZ7yQ/image-juliusomo.webp",
+					},
+					username: "juliusomo",
+				},
+			};
+			return replyObject;
+		},
+	},
 	methods: {
 		handleReply(media) {
 			if (media === "desktop") {
+				this.show = !this.show;
+			}
+		},
+
+		handleSubmit() {
+			if (this.pureReplyData.content === "") {
+				return;
+			} else {
+				this.$emit(
+					"addNewReply",
+					this.commentData.id,
+					this.pureReplyData
+				);
 				this.show = !this.show;
 			}
 		},
