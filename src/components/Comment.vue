@@ -176,6 +176,7 @@
 					</div>
 					<div
 						class="text-purple-700 edit-button cursor-pointer flex-1 justify-center hidden md:inline-flex items-center mx-2"
+						@click="$emit('editComment', commentData.id)"
 					>
 						<img
 							class="mx-2"
