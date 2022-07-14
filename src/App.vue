@@ -6,6 +6,7 @@
 			:key="comment.id"
 			@addNewReply="addNewReply"
 			@delete-reply="deleteReply"
+			@delete-comment="deleteComment"
 		/>
 	</div>
 	<AddNewCommentForm @createReply="createReply" />
@@ -130,6 +131,25 @@ export default {
 					).catch((e) => console.log(e));
 				})
 				.catch((e) => console.log(e));
+		},
+		deleteComment(id) {
+			let commentIndex = this.comments.findIndex(
+				(comment) => comment.id === id
+			);
+			fetch(
+				"https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/" +
+					id +
+					".json",
+				{
+					method: "DELETE",
+					headers: {
+						"Content-type": "application/json; charset=UTF-8",
+					},
+				}
+			).catch((e) => console.log(e));
+			setTimeout(() => {
+				this.comments.splice(commentIndex, 1);
+			}, 1000);
 		},
 	},
 };

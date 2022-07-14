@@ -123,10 +123,14 @@
 			/>
 		</div>
 	</div>
-	<div v-else class="flex flex-col max-w-3xl mx-auto w-11/12 my-2">
+	<div
+		v-else
+		ref="userComment"
+		class="flex flex-col max-w-3xl mx-auto w-11/12 my-2"
+	>
 		<div class="flex items-center bg-white rounded">
 			<div
-				class="bg-purple-50 w-20 h-20 ml-2 rounded hidden md:flex flex-col items-center justify-between"
+				class="bg-purple-50 w-10 h-20 py-2 ml-2 rounded hidden md:flex flex-col items-center justify-between"
 			>
 				<img
 					src="../assets/images/icon-plus.svg"
@@ -161,6 +165,7 @@
 					<span class="text-sm">{{ commentData.createdAt }}</span>
 					<div
 						class="text-purple-700 mx-2 delete-button cursor-pointer flex-1 justify-center hidden md:flex items-center"
+						@click="handleDelete"
 					>
 						<img
 							class="mx-2"
@@ -284,6 +289,10 @@ export default {
 				);
 				this.show = !this.show;
 			}
+		},
+		handleDelete() {
+			this.$refs.userComment.classList.add("delete-animation");
+			this.$emit("deleteComment", this.commentData.id);
 		},
 	},
 };
