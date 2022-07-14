@@ -5,6 +5,7 @@
 			:commentData="comment"
 			:key="comment.id"
 			@addNewReply="addNewReply"
+			@delete-reply="deleteReply"
 		/>
 	</div>
 	<div
@@ -86,7 +87,44 @@ export default {
 							},
 						];
 					}
+					fetch(
+						`https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/${commentId}/replies/${data.name}.json`,
+						{
+							method: "PATCH",
+							body: JSON.stringify({ id: data.name }),
+							headers: {
+								"Content-type":
+									"application/json; charset=UTF-8",
+							},
+						}
+					).catch((e) => console.log(e));
 				});
+		},
+		deleteReply(replyId, commentId) {
+			fetch(
+				`https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/${commentId}/replies/${replyId}.json`,
+				{
+					method: "DELETE",
+					headers: {
+						"Content-type": "application/json; charset=UTF-8",
+					},
+				}
+			)
+				.then(() => {
+					const currentCommentIndex = this.comments.findIndex(
+						(comment) => comment.id === commentId
+					);
+					const replyIndex = this.comments[
+						currentCommentIndex
+					].replies.findIndex((reply) => reply.id === replyId);
+					console.log(currentCommentIndex, replyIndex);
+
+					this.comments[currentCommentIndex].replies.splice(
+						replyIndex,
+						1
+					);
+				})
+				.catch((e) => console.log(e));
 		},
 	},
 };

@@ -72,7 +72,7 @@
 			</div>
 		</div>
 	</div>
-	<div v-else class="flex bg-white my-2 items-center">
+	<div v-else class="flex bg-white my-2 items-center" ref="replyElement">
 		<div
 			class="bg-purple-50 w-10 h-20 ml-2 rounded py-2 hidden md:flex flex-col items-center justify-between"
 		>
@@ -108,6 +108,7 @@
 
 				<div
 					class="text-purple-700 mx-2 delete-button cursor-pointer flex-1 justify-center hidden md:flex items-center"
+					@click="handleDelete"
 				>
 					<img
 						class="mx-2"
@@ -177,6 +178,15 @@ export default {
 		replyData: {
 			type: Object,
 			required: true,
+		},
+	},
+	methods: {
+		handleDelete() {
+			this.$refs.replyElement.classList.add("delete-animation");
+			setTimeout(() => {
+				this.$refs.replyElement.remove();
+			}, 1000);
+			this.$emit("deleteReply", this.replyData.id);
 		},
 	},
 };
