@@ -59,12 +59,34 @@ export default {
 			let currentCommentIndex = this.comments.findIndex(
 				(comment) => comment.id === commentId
 			);
-
-			if (this.comments[currentCommentIndex].replies !== undefined) {
-				this.comments[currentCommentIndex].replies.push(replyData);
-			} else {
-				this.comments[currentCommentIndex]["replies"] = [replyData];
-			}
+			fetch(
+				`https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/${commentId}/replies.json`,
+				{
+					method: "POST",
+					body: JSON.stringify(replyData),
+					headers: {
+						"Content-type": "application/json; charset=UTF-8",
+					},
+				}
+			)
+				.then((res) => res.json())
+				.then((data) => {
+					if (
+						this.comments[currentCommentIndex].replies !== undefined
+					) {
+						this.comments[currentCommentIndex].replies.push({
+							...replyData,
+							id: data.name,
+						});
+					} else {
+						this.comments[currentCommentIndex]["replies"] = [
+							{
+								...replyData,
+								id: data.name,
+							},
+						];
+					}
+				});
 		},
 	},
 };
