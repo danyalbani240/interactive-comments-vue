@@ -53,6 +53,7 @@ export default {
 				createdAt: "1 day ago",
 			};
 			this.$emit("createReply", data);
+			this.content = "";
 		},
 	},
 };
