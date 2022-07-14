@@ -118,8 +118,7 @@ export default {
 					const replyIndex = this.comments[
 						currentCommentIndex
 					].replies.findIndex((reply) => reply.id === replyId);
-					console.log(currentCommentIndex, replyIndex);
-
+					s;
 					this.comments[currentCommentIndex].replies.splice(
 						replyIndex,
 						1
