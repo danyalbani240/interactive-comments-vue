@@ -120,6 +120,13 @@
 				@delete-reply="
 					(data) => this.$emit('delete-reply', data, commentData.id)
 				"
+				@editReply="
+					(data) =>
+						$emit('editReply', {
+							...data,
+							parentId: commentData.id,
+						})
+				"
 			/>
 		</div>
 	</div>

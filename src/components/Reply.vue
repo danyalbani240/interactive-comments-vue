@@ -91,6 +91,12 @@
 		<div
 			class="bg-white ml-2 md:ml-0 my-2 md:w-full px-5 flex flex-col justify-evenly h-64 rounded md:h-40"
 		>
+			<EditModal
+				v-show="showEditModal"
+				@cancel="showEditModal = false"
+				:baseValue="replyData.content"
+				@submitModal="handleEdit"
+			/>
 			<div class="flex items-center md:pr-0 pr-14 mt-3 text-gray-500">
 				<img
 					class="w-9 h-9 mr-2"
@@ -119,6 +125,7 @@
 				</div>
 				<div
 					class="text-purple-700 edit-button-mob cursor-pointer flex-1 justify-center hidden md:inline-flex items-center mx-2"
+					@click="showEditModal = true"
 				>
 					<img
 						class="mx-2"
@@ -173,12 +180,21 @@
 </template>
 
 <script>
+import EditModal from "./EditModal.vue";
+
 export default {
+	components: { EditModal },
+
 	props: {
 		replyData: {
 			type: Object,
 			required: true,
 		},
+	},
+	data() {
+		return {
+			showEditModal: false,
+		};
 	},
 	methods: {
 		handleDelete() {
@@ -187,6 +203,13 @@ export default {
 				this.$refs.replyElement.remove();
 			}, 1000);
 			this.$emit("deleteReply", this.replyData.id);
+		},
+		handleEdit(data) {
+			this.$emit("editReply", {
+				newContent: data,
+				id: this.replyData.id,
+			});
+			this.showEditModal = false;
 		},
 	},
 };

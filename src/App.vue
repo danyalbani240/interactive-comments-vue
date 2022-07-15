@@ -8,6 +8,7 @@
 			@delete-reply="deleteReply"
 			@delete-comment="deleteComment"
 			@editComment="editComment"
+			@editReply="editReply"
 		/>
 	</div>
 	<AddNewCommentForm @createComment="createComment" />
@@ -144,7 +145,7 @@ export default {
 					const replyIndex = this.comments[
 						currentCommentIndex
 					].replies.findIndex((reply) => reply.id === replyId);
-					s;
+
 					this.comments[currentCommentIndex].replies.splice(
 						replyIndex,
 						1
@@ -162,6 +163,24 @@ export default {
 				{
 					method: "PATCH",
 					body: JSON.stringify({ content: newContent }),
+					headers: {
+						"Content-type": "application/json; charset=UTF-8",
+					},
+				}
+			).catch((e) => console.log(e));
+		},
+		editReply(data) {
+			const commentIndex = this.comments.findIndex(
+				(comment) => comment.id === data.parentId
+			);
+
+			this.comments[commentIndex].replies[data.id].content =
+				data.newContent;
+			fetch(
+				`https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/${data.parentId}/replies/${data.id}.json`,
+				{
+					method: "PATCH",
+					body: JSON.stringify({ content: data.newContent }),
 					headers: {
 						"Content-type": "application/json; charset=UTF-8",
 					},
