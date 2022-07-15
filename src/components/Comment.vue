@@ -127,6 +127,9 @@
 							parentId: commentData.id,
 						})
 				"
+				@createNewReply="
+					(data) => $emit('replyToReply', commentData.id, data)
+				"
 			/>
 		</div>
 	</div>

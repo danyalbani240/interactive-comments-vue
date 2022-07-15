@@ -9,6 +9,7 @@
 			@delete-comment="deleteComment"
 			@editComment="editComment"
 			@editReply="editReply"
+			@replyToReply="addNewReply"
 		/>
 	</div>
 	<AddNewCommentForm @createComment="createComment" />

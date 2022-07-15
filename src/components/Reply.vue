@@ -3,6 +3,7 @@
 		v-if="replyData.user.username !== 'juliusomo'"
 		class="flex bg-white my-2 items-center"
 	>
+		<ReplyModal v-show="showReplyModal" @submitModal="handleReply" />
 		<div
 			class="bg-purple-50 w-20 h-20 ml-2 rounded hidden md:flex flex-col items-center justify-between py-2"
 		>
@@ -35,6 +36,7 @@
 				<span class="text-sm">{{ replyData.createdAt }}</span>
 				<div
 					class="text-purple-700 cursor-pointer reply-button flex-1 text-right hidden md:block"
+					@click="showReplyModal = true"
 				>
 					<img
 						src="../assets/images/icon-reply.svg"
@@ -181,9 +183,10 @@
 
 <script>
 import EditModal from "./EditModal.vue";
+import ReplyModal from "./ReplyModal.vue";
 
 export default {
-	components: { EditModal },
+	components: { EditModal, ReplyModal },
 
 	props: {
 		replyData: {
@@ -194,6 +197,7 @@ export default {
 	data() {
 		return {
 			showEditModal: false,
+			showReplyModal: false,
 		};
 	},
 	methods: {
@@ -208,6 +212,23 @@ export default {
 				id: this.replyData.id,
 			});
 			this.showEditModal = false;
+		},
+		handleReply(replyContent) {
+			const replyData = {
+				content: replyContent,
+				score: 0,
+				createdAt: "1 day ago",
+				replyingTo: this.replyData.user.username,
+				user: {
+					username: "juliusomo",
+					image: {
+						png: "https://i.ibb.co/jWJfdwM/image-juliusomo.png",
+						webp: "https://i.ibb.co/cDyZ7yQ/image-juliusomo.webp",
+					},
+				},
+			};
+			this.$emit("createNewReply", replyData);
+			this.showReplyModal = false;
 		},
 	},
 };
