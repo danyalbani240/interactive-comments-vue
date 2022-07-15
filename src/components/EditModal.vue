@@ -10,7 +10,7 @@
 		>
 			<textarea
 				class="w-full h-20 border-gray-200 focus:border-gray-400 outline-none rounded px-4 py-2 border-2 resize-none my-3"
-				placeholder="Reply Text"
+				placeholder="Edit Text"
 				v-model="newContent"
 			></textarea>
 			<div class="flex justify-between">
