@@ -144,14 +144,24 @@ export default {
 					const currentCommentIndex = this.comments.findIndex(
 						(comment) => comment.id === commentId
 					);
-					const replyIndex = this.comments[
-						currentCommentIndex
-					].replies.findIndex((reply) => reply.id === replyId);
+					if (
+						Array.isArray(
+							this.comments[currentCommentIndex].replies
+						)
+					) {
+						const replyIndex = this.comments[
+							currentCommentIndex
+						].replies.findIndex((reply) => reply.id === replyId);
 
-					this.comments[currentCommentIndex].replies.splice(
-						replyIndex,
-						1
-					);
+						this.comments[currentCommentIndex].replies.splice(
+							replyIndex,
+							1
+						);
+					} else {
+						delete this.comments[currentCommentIndex].replies[
+							replyId
+						];
+					}
 				})
 				.catch((e) => console.log(e));
 		},
