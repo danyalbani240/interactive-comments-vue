@@ -33,11 +33,11 @@
 					}}</span>
 					<span class="text-sm">{{ commentData.createdAt }}</span>
 					<div
-						@click="handleReply('desktop')"
+						@click="createReplyBox('desktop')"
 						class="cursor-pointer flex-1 text-right hidden md:block reply-el"
 						:class="{
-							'text-purple-700': !show,
-							'text-red-400': show,
+							'text-purple-700': !replyBoxShow,
+							'text-red-400': replyBoxShow,
 						}"
 					>
 						<img
@@ -45,10 +45,10 @@
 							class="w-4 mr-1 inline-block align-middle"
 							alt="reply"
 							:class="{
-								hidden: show,
+								hidden: replyBoxShow,
 							}"
 						/><span class="inline-block font-bold">{{
-							show === true ? "Cancel" : "Reply"
+							replyBoxShow === true ? "Cancel" : "Reply"
 						}}</span>
 					</div>
 				</div>
@@ -84,8 +84,8 @@
 			</div>
 		</div>
 		<form
-			@submit.prevent="handleSubmit"
-			v-if="show"
+			@submit.prevent="handleReply"
+			v-if="replyBoxShow"
 			class="bg-white py-4 mx-auto rounded flex w-full mt-5 items-center max-w-3xl"
 		>
 			<img
@@ -128,6 +128,12 @@
 		ref="userComment"
 		class="flex flex-col max-w-3xl mx-auto w-11/12 my-2"
 	>
+		<EditModal
+			@cancel="editModalShow = false"
+			v-show="editModalShow"
+			:baseValue="commentData.content"
+			@submitModal="handleEdit"
+		/>
 		<div class="flex items-center bg-white rounded">
 			<div
 				class="bg-purple-50 w-10 h-20 py-2 ml-2 rounded hidden md:flex flex-col items-center justify-between"
@@ -176,7 +182,7 @@
 					</div>
 					<div
 						class="text-purple-700 edit-button cursor-pointer flex-1 justify-center hidden md:inline-flex items-center mx-2"
-						@click="$emit('editComment', commentData.id)"
+						@click="createEditBox"
 					>
 						<img
 							class="mx-2"
@@ -237,11 +243,13 @@
 
 <script>
 import Reply from "./Reply.vue";
+import EditModal from "./EditModal.vue";
 export default {
-	components: { Reply },
+	components: { Reply, EditModal },
 	data() {
 		return {
-			show: false,
+			replyBoxShow: false,
+			editModalShow: false,
 			replyText: `${"@" + this.commentData.user.username.trim() + ","}`,
 		};
 	},
@@ -273,13 +281,13 @@ export default {
 		},
 	},
 	methods: {
-		handleReply(media) {
+		createReplyBox(media) {
 			if (media === "desktop") {
-				this.show = !this.show;
+				this.replyBoxShow = !this.replyBoxShow;
 			}
 		},
 
-		handleSubmit() {
+		handleReply() {
 			if (this.pureReplyData.content === "") {
 				return;
 			} else {
@@ -288,12 +296,18 @@ export default {
 					this.commentData.id,
 					this.pureReplyData
 				);
-				this.show = !this.show;
+				this.replyBoxShow = !this.replyBoxShow;
 			}
 		},
 		handleDelete() {
 			this.$refs.userComment.classList.add("delete-animation");
 			this.$emit("deleteComment", this.commentData.id);
+		},
+		createEditBox() {
+			this.editModalShow = true;
+		},
+		handleEdit(data) {
+			this.$emit("editComment", data, this.commentData.id);
 		},
 	},
 };

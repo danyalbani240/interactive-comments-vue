@@ -7,9 +7,10 @@
 			@addNewReply="addNewReply"
 			@delete-reply="deleteReply"
 			@delete-comment="deleteComment"
+			@editComment="editComment"
 		/>
 	</div>
-	<AddNewCommentForm @createReply="createReply" />
+	<AddNewCommentForm @createComment="createComment" />
 </template>
 
 <script>
@@ -32,6 +33,55 @@ export default {
 			});
 	},
 	methods: {
+		createComment(data) {
+			fetch(
+				"https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments.json",
+				{
+					method: "POST",
+					body: JSON.stringify(data),
+					headers: {
+						"Content-type": "application/json; charset=UTF-8",
+					},
+				}
+			)
+				.then((res) => res.json())
+				.then(({ name }) => {
+					this.comments.push({ ...data, id: name });
+					fetch(
+						"https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/" +
+							name +
+							".json",
+						{
+							method: "PATCH",
+							body: JSON.stringify({ id: name }),
+							headers: {
+								"Content-type":
+									"application/json; charset=UTF-8",
+							},
+						}
+					).catch((e) => console.log(e));
+				})
+				.catch((e) => console.log(e));
+		},
+		deleteComment(id) {
+			let commentIndex = this.comments.findIndex(
+				(comment) => comment.id === id
+			);
+			fetch(
+				"https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/" +
+					id +
+					".json",
+				{
+					method: "DELETE",
+					headers: {
+						"Content-type": "application/json; charset=UTF-8",
+					},
+				}
+			).catch((e) => console.log(e));
+			setTimeout(() => {
+				this.comments.splice(commentIndex, 1);
+			}, 1000);
+		},
 		addNewReply(commentId, replyData) {
 			let currentCommentIndex = this.comments.findIndex(
 				(comment) => comment.id === commentId
@@ -102,54 +152,21 @@ export default {
 				})
 				.catch((e) => console.log(e));
 		},
-		createReply(data) {
-			fetch(
-				"https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments.json",
-				{
-					method: "POST",
-					body: JSON.stringify(data),
-					headers: {
-						"Content-type": "application/json; charset=UTF-8",
-					},
-				}
-			)
-				.then((res) => res.json())
-				.then(({ name }) => {
-					this.comments.push({ ...data, id: name });
-					fetch(
-						"https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/" +
-							name +
-							".json",
-						{
-							method: "PATCH",
-							body: JSON.stringify({ id: name }),
-							headers: {
-								"Content-type":
-									"application/json; charset=UTF-8",
-							},
-						}
-					).catch((e) => console.log(e));
-				})
-				.catch((e) => console.log(e));
-		},
-		deleteComment(id) {
-			let commentIndex = this.comments.findIndex(
-				(comment) => comment.id === id
+		editComment(newContent, commentId) {
+			const commentIndex = this.comments.findIndex(
+				(comment) => comment.id === commentId
 			);
+			this.comments[commentIndex].content = newContent;
 			fetch(
-				"https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/" +
-					id +
-					".json",
+				`https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/${commentId}.json`,
 				{
-					method: "DELETE",
+					method: "PATCH",
+					body: JSON.stringify({ content: newContent }),
 					headers: {
 						"Content-type": "application/json; charset=UTF-8",
 					},
 				}
 			).catch((e) => console.log(e));
-			setTimeout(() => {
-				this.comments.splice(commentIndex, 1);
-			}, 1000);
 		},
 	},
 };
