@@ -10,6 +10,7 @@
 			@editComment="editComment"
 			@editReply="editReply"
 			@replyToReply="addNewReply"
+			@changeScore="changeScore"
 		/>
 	</div>
 	<AddNewCommentForm @createComment="createComment" />
@@ -187,6 +188,14 @@ export default {
 					},
 				}
 			).catch((e) => console.log(e));
+		},
+		changeScore(type, id) {
+			const commentIndex = this.comments.findIndex(
+				(comment) => comment.id === id
+			);
+			type === "-"
+				? (this.comments[commentIndex].score -= 1)
+				: (this.comments[commentIndex].score += 1);
 		},
 	},
 };

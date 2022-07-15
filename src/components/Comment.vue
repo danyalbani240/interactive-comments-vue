@@ -10,6 +10,7 @@
 				<img
 					src="../assets/images/icon-plus.svg"
 					class="cursor-pointer"
+					@click="$emit('changeScore', '+', commentData.id)"
 				/>
 				<span class="text-purple-700 font-bold">{{
 					commentData.score
@@ -17,6 +18,7 @@
 				<img
 					class="cursor-pointer"
 					src="../assets/images/icon-minus.svg"
+					@click="$emit('changeScore', '-', commentData.id)"
 				/>
 			</div>
 			<div
