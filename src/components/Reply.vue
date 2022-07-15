@@ -199,9 +199,7 @@ export default {
 	methods: {
 		handleDelete() {
 			this.$refs.replyElement.classList.add("delete-animation");
-			setTimeout(() => {
-				this.$refs.replyElement.remove();
-			}, 1000);
+
 			this.$emit("deleteReply", this.replyData.id);
 		},
 		handleEdit(data) {
