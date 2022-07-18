@@ -68,7 +68,10 @@
 						alt=""
 					/>
 				</div>
-				<div class="text-purple-700 cursor-pointer reply-button">
+				<div
+					class="text-purple-700 cursor-pointer reply-button"
+					@click="showReplyModal = true"
+				>
 					<img
 						src="../assets/images/icon-reply.svg"
 						class="w-4 mr-1 inline-block align-middle"
