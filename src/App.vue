@@ -66,7 +66,7 @@ export default {
 			)
 				.then((res) => res.json())
 				.then(({ name }) => {
-					this.comments.push({ ...data, id: name });
+					this.comments[name] = { ...data, id: name };
 					fetch(
 						"https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/" +
 							name +
