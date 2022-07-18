@@ -10,8 +10,8 @@
 		>
 			<textarea
 				class="w-full h-20 border-gray-200 focus:border-gray-400 outline-none rounded px-4 py-2 border-2 resize-none my-3"
-				placeholder="Edit Text"
-				v-model="newContent"
+				placeholder="Reply Text"
+				v-model="replyContent"
 			></textarea>
 			<div class="flex justify-between">
 				<button
@@ -21,9 +21,9 @@
 					CANCEL</button
 				><button
 					class="text-white bg-purple-600 p-2 mt-2 send-edit cursor-pointer rounded"
-					@click="handleEdit"
+					@click="handleReply"
 				>
-					Edit
+					Reply
 				</button>
 			</div>
 		</form>
@@ -32,24 +32,18 @@
 
 <script>
 export default {
-	props: {
-		baseValue: {
-			type: String,
-			required: true,
-		},
-	},
 	data() {
 		return {
-			newContent: this.baseValue,
+			replyContent: "",
 		};
 	},
 	methods: {
-		handleEdit() {
+		handleReply() {
 			// check if there is any change
-			if (this.baseValue === this.newContent) {
+			if ("" === this.replyContent.trim()) {
 				return;
 			} else {
-				this.$emit("submitModal", this.newContent);
+				this.$emit("submitModal", this.replyContent);
 			}
 		},
 	},

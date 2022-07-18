@@ -3,6 +3,11 @@
 		v-if="replyData.user.username !== 'juliusomo'"
 		class="flex bg-white my-2 items-center"
 	>
+		<ReplyModal
+			@cancel="showReplyModal = false"
+			v-show="showReplyModal"
+			@submitModal="handleReply"
+		/>
 		<div
 			class="bg-purple-50 w-20 h-20 ml-2 rounded hidden md:flex flex-col items-center justify-between py-2"
 		>
@@ -35,6 +40,7 @@
 				<span class="text-sm">{{ replyData.createdAt }}</span>
 				<div
 					class="text-purple-700 cursor-pointer reply-button flex-1 text-right hidden md:block"
+					@click="showReplyModal = true"
 				>
 					<img
 						src="../assets/images/icon-reply.svg"
@@ -62,7 +68,10 @@
 						alt=""
 					/>
 				</div>
-				<div class="text-purple-700 cursor-pointer reply-button">
+				<div
+					class="text-purple-700 cursor-pointer reply-button"
+					@click="showReplyModal = true"
+				>
 					<img
 						src="../assets/images/icon-reply.svg"
 						class="w-4 mr-1 inline-block align-middle"
@@ -91,6 +100,12 @@
 		<div
 			class="bg-white ml-2 md:ml-0 my-2 md:w-full px-5 flex flex-col justify-evenly h-64 rounded md:h-40"
 		>
+			<EditModal
+				v-show="showEditModal"
+				@cancel="showEditModal = false"
+				:baseValue="replyData.content"
+				@submitModal="handleEdit"
+			/>
 			<div class="flex items-center md:pr-0 pr-14 mt-3 text-gray-500">
 				<img
 					class="w-9 h-9 mr-2"
@@ -119,6 +134,7 @@
 				</div>
 				<div
 					class="text-purple-700 edit-button-mob cursor-pointer flex-1 justify-center hidden md:inline-flex items-center mx-2"
+					@click="showEditModal = true"
 				>
 					<img
 						class="mx-2"
@@ -150,7 +166,10 @@
 					/>
 				</div>
 				<div class="flex flex-1 justify-evenly">
-					<div class="flex items-center delete-button cursor-pointer">
+					<div
+						@click="handleDelete"
+						class="flex items-center delete-button cursor-pointer"
+					>
 						<img
 							class="mx-2"
 							src="../assets/images/icon-delete.svg"
@@ -158,7 +177,10 @@
 						/>
 						<span class="text-red-600">Delete</span>
 					</div>
-					<div class="flex items-center edit-button cursor-pointer">
+					<div
+						class="flex items-center edit-button cursor-pointer"
+						@click="showEditModal = true"
+					>
 						<img
 							class="mx-2"
 							src="../assets/images/icon-edit.svg"
@@ -173,20 +195,53 @@
 </template>
 
 <script>
+import EditModal from "./EditModal.vue";
+import ReplyModal from "./ReplyModal.vue";
+
 export default {
+	components: { EditModal, ReplyModal },
+
 	props: {
 		replyData: {
 			type: Object,
 			required: true,
 		},
 	},
+	data() {
+		return {
+			showEditModal: false,
+			showReplyModal: false,
+		};
+	},
 	methods: {
 		handleDelete() {
 			this.$refs.replyElement.classList.add("delete-animation");
-			setTimeout(() => {
-				this.$refs.replyElement.remove();
-			}, 1000);
+
 			this.$emit("deleteReply", this.replyData.id);
+		},
+		handleEdit(data) {
+			this.$emit("editReply", {
+				newContent: data,
+				id: this.replyData.id,
+			});
+			this.showEditModal = false;
+		},
+		handleReply(replyContent) {
+			const replyData = {
+				content: replyContent,
+				score: 0,
+				createdAt: "1 day ago",
+				replyingTo: this.replyData.user.username,
+				user: {
+					username: "juliusomo",
+					image: {
+						png: "https://i.ibb.co/jWJfdwM/image-juliusomo.png",
+						webp: "https://i.ibb.co/cDyZ7yQ/image-juliusomo.webp",
+					},
+				},
+			};
+			this.$emit("createNewReply", replyData);
+			this.showReplyModal = false;
 		},
 	},
 };
