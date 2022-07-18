@@ -32,7 +32,24 @@ export default {
 		)
 			.then((res) => res.json())
 			.then((res) => {
-				this.comments = Object.values(res);
+				let comments = Object.values(res);
+				let convertedComments = {};
+				for (const comment of comments) {
+					if (
+						comment.replies !== undefined &&
+						Array.isArray(comment.replies)
+					) {
+						let convertedComment;
+						convertedComment = {
+							...comment,
+							replies: Object.assign({}, comment.replies),
+						};
+						convertedComments[comment.id] = convertedComment;
+					} else {
+						convertedComments[comment.id] = comment;
+					}
+				}
+				this.comments = convertedComments;
 			});
 	},
 	methods: {
@@ -67,9 +84,6 @@ export default {
 				.catch((e) => console.log(e));
 		},
 		deleteComment(id) {
-			let commentIndex = this.comments.findIndex(
-				(comment) => comment.id === id
-			);
 			fetch(
 				"https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/" +
 					id +
@@ -82,13 +96,10 @@ export default {
 				}
 			).catch((e) => console.log(e));
 			setTimeout(() => {
-				this.comments.splice(commentIndex, 1);
+				delete this.comments[id];
 			}, 1000);
 		},
 		addNewReply(commentId, replyData) {
-			let currentCommentIndex = this.comments.findIndex(
-				(comment) => comment.id === commentId
-			);
 			fetch(
 				`https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/${commentId}/replies.json`,
 				{
@@ -101,20 +112,18 @@ export default {
 			)
 				.then((res) => res.json())
 				.then((data) => {
-					if (
-						this.comments[currentCommentIndex].replies !== undefined
-					) {
-						this.comments[currentCommentIndex].replies.push({
+					if (this.comments[commentId].replies !== undefined) {
+						this.comments[commentId].replies[data.name] = {
 							...replyData,
 							id: data.name,
-						});
+						};
 					} else {
-						this.comments[currentCommentIndex]["replies"] = [
-							{
+						this.comments[commentId].replies = {
+							[data.name]: {
 								...replyData,
 								id: data.name,
 							},
-						];
+						};
 					}
 					fetch(
 						`https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/${commentId}/replies/${data.name}.json`,
@@ -141,35 +150,12 @@ export default {
 				}
 			)
 				.then(() => {
-					const currentCommentIndex = this.comments.findIndex(
-						(comment) => comment.id === commentId
-					);
-					if (
-						Array.isArray(
-							this.comments[currentCommentIndex].replies
-						)
-					) {
-						const replyIndex = this.comments[
-							currentCommentIndex
-						].replies.findIndex((reply) => reply.id === replyId);
-
-						this.comments[currentCommentIndex].replies.splice(
-							replyIndex,
-							1
-						);
-					} else {
-						delete this.comments[currentCommentIndex].replies[
-							replyId
-						];
-					}
+					delete this.comments[commentId].replies[replyId];
 				})
 				.catch((e) => console.log(e));
 		},
 		editComment(newContent, commentId) {
-			const commentIndex = this.comments.findIndex(
-				(comment) => comment.id === commentId
-			);
-			this.comments[commentIndex].content = newContent;
+			this.comments[commentId].content = newContent;
 			fetch(
 				`https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/${commentId}.json`,
 				{
@@ -182,11 +168,7 @@ export default {
 			).catch((e) => console.log(e));
 		},
 		editReply(data) {
-			const commentIndex = this.comments.findIndex(
-				(comment) => comment.id === data.parentId
-			);
-
-			this.comments[commentIndex].replies[data.id].content =
+			this.comments[data.parentId].replies[data.id].content =
 				data.newContent;
 			fetch(
 				`https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/${data.parentId}/replies/${data.id}.json`,
@@ -200,12 +182,9 @@ export default {
 			).catch((e) => console.log(e));
 		},
 		changeScore(type, id) {
-			const commentIndex = this.comments.findIndex(
-				(comment) => comment.id === id
-			);
 			type === "-"
-				? (this.comments[commentIndex].score -= 1)
-				: (this.comments[commentIndex].score += 1);
+				? (this.comments[id].score -= 1)
+				: (this.comments[id].score += 1);
 		},
 	},
 };
