@@ -87,7 +87,7 @@
 		</div>
 		<form
 			@submit.prevent="handleReply"
-			v-if="replyBoxShow"
+			v-show="replyBoxShow"
 			class="bg-white py-4 mx-auto rounded flex w-full mt-5 items-center max-w-3xl"
 		>
 			<img
@@ -308,6 +308,9 @@ export default {
 					this.commentData.id,
 					this.pureReplyData
 				);
+				this.replyText = `${
+					"@" + this.commentData.user.username.trim() + ","
+				}`;
 				this.replyBoxShow = !this.replyBoxShow;
 			}
 		},
