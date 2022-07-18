@@ -3,7 +3,11 @@
 		v-if="replyData.user.username !== 'juliusomo'"
 		class="flex bg-white my-2 items-center"
 	>
-		<ReplyModal v-show="showReplyModal" @submitModal="handleReply" />
+		<ReplyModal
+			@cancel="showReplyModal = false"
+			v-show="showReplyModal"
+			@submitModal="handleReply"
+		/>
 		<div
 			class="bg-purple-50 w-20 h-20 ml-2 rounded hidden md:flex flex-col items-center justify-between py-2"
 		>

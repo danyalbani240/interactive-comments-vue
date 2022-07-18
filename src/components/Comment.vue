@@ -3,6 +3,11 @@
 		v-if="commentData.user.username !== 'juliusomo'"
 		class="flex flex-col max-w-3xl mx-auto w-11/12 my-2"
 	>
+		<ReplyModal
+			@submitModal="(data) => handleReply(data, 'Modal')"
+			@cancel="replyModalShow = false"
+			v-show="replyModalShow"
+		/>
 		<div class="flex items-center bg-white rounded">
 			<div
 				class="bg-purple-50 w-20 h-20 ml-2 py-2 rounded hidden md:flex flex-col items-center justify-between"
@@ -75,7 +80,10 @@
 							alt=""
 						/>
 					</div>
-					<div class="text-purple-700 cursor-pointer reply-mobile">
+					<div
+						class="text-purple-700 cursor-pointer reply-mobile"
+						@click="createReplyBox('mobile')"
+					>
 						<img
 							src="../assets/images/icon-reply.svg"
 							class="w-4 mr-1 inline-block align-middle"
@@ -256,11 +264,13 @@
 <script>
 import Reply from "./Reply.vue";
 import EditModal from "./EditModal.vue";
+import ReplyModal from "./ReplyModal.vue";
 export default {
-	components: { Reply, EditModal },
+	components: { Reply, EditModal, ReplyModal },
 	data() {
 		return {
 			replyBoxShow: false,
+			replyModalShow: false,
 			editModalShow: false,
 			replyText: `${"@" + this.commentData.user.username.trim() + ","}`,
 		};
@@ -296,22 +306,45 @@ export default {
 		createReplyBox(media) {
 			if (media === "desktop") {
 				this.replyBoxShow = !this.replyBoxShow;
+			} else {
+				this.replyModalShow = !this.replyModalShow;
 			}
 		},
 
-		handleReply() {
-			if (this.pureReplyData.content === "") {
-				return;
+		handleReply(data, Media) {
+			this.replyModalShow = false;
+			if (Media === "Modal") {
+				if (data.trim() === "") {
+					return;
+				} else {
+					this.$emit("addNewReply", this.commentData.id, {
+						content: data,
+						createdAt: "1 day ago",
+						replyingTo: this.commentData.user.username,
+						score: 0,
+						user: {
+							image: {
+								png: "https://i.ibb.co/jWJfdwM/image-juliusomo.png",
+								webp: "https://i.ibb.co/cDyZ7yQ/image-juliusomo.webp",
+							},
+							username: "juliusomo",
+						},
+					});
+				}
 			} else {
-				this.$emit(
-					"addNewReply",
-					this.commentData.id,
-					this.pureReplyData
-				);
-				this.replyText = `${
-					"@" + this.commentData.user.username.trim() + ","
-				}`;
-				this.replyBoxShow = !this.replyBoxShow;
+				if (this.pureReplyData.content === "") {
+					return;
+				} else {
+					this.$emit(
+						"addNewReply",
+						this.commentData.id,
+						this.pureReplyData
+					);
+					this.replyText = `${
+						"@" + this.commentData.user.username.trim() + ","
+					}`;
+					this.replyBoxShow = !this.replyBoxShow;
+				}
 			}
 		},
 		handleDelete() {
