@@ -163,7 +163,10 @@
 					/>
 				</div>
 				<div class="flex flex-1 justify-evenly">
-					<div class="flex items-center delete-button cursor-pointer">
+					<div
+						@click="handleDelete"
+						class="flex items-center delete-button cursor-pointer"
+					>
 						<img
 							class="mx-2"
 							src="../assets/images/icon-delete.svg"
@@ -171,7 +174,10 @@
 						/>
 						<span class="text-red-600">Delete</span>
 					</div>
-					<div class="flex items-center edit-button cursor-pointer">
+					<div
+						class="flex items-center edit-button cursor-pointer"
+						@click="showEditModal = true"
+					>
 						<img
 							class="mx-2"
 							src="../assets/images/icon-edit.svg"

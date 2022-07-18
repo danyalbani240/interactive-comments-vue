@@ -236,6 +236,7 @@
 					<div class="flex flex-1 justify-evenly">
 						<div
 							class="flex items-center delete-button cursor-pointer"
+							@click="handleDelete"
 						>
 							<img
 								class="mx-2"
@@ -246,6 +247,7 @@
 						</div>
 						<div
 							class="flex items-center edit-button cursor-pointer"
+							@click="createEditBox"
 						>
 							<img
 								class="mx-2"
