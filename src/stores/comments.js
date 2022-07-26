@@ -122,5 +122,20 @@ export const useCommentsStore = defineStore("comments", {
 				})
 				.catch((e) => console.log(e));
 		},
+		deleteReply(replyId, commentId) {
+			fetch(
+				`https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/${commentId}/replies/${replyId}.json`,
+				{
+					method: "DELETE",
+					headers: {
+						"Content-type": "application/json; charset=UTF-8",
+					},
+				}
+			)
+				.then(() => {
+					delete this.comments[commentId].replies[replyId];
+				})
+				.catch((e) => console.log(e));
+		},
 	},
 });

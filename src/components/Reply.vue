@@ -197,7 +197,8 @@
 <script>
 import EditModal from "./EditModal.vue";
 import ReplyModal from "./ReplyModal.vue";
-
+import { mapStores } from "pinia";
+import { useCommentsStore } from "../stores/comments";
 export default {
 	components: { EditModal, ReplyModal },
 
@@ -205,6 +206,10 @@ export default {
 		replyData: {
 			type: Object,
 			required: true,
+		},
+		parentId: {
+			required: true,
+			type: Number,
 		},
 	},
 	data() {
@@ -217,7 +222,7 @@ export default {
 		handleDelete() {
 			this.$refs.replyElement.classList.add("delete-animation");
 
-			this.$emit("deleteReply", this.replyData.id);
+			this.commentsStore.deleteReply(this.replyData.id, this.parentId);
 		},
 		handleEdit(data) {
 			this.$emit("editReply", {
@@ -243,6 +248,9 @@ export default {
 			this.$emit("createNewReply", replyData);
 			this.showReplyModal = false;
 		},
+	},
+	computed: {
+		...mapStores(useCommentsStore),
 	},
 };
 </script>

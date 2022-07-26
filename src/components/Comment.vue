@@ -127,9 +127,7 @@
 				v-for="reply in commentData.replies"
 				:key="reply.id"
 				:replyData="reply"
-				@delete-reply="
-					(data) => this.$emit('delete-reply', data, commentData.id)
-				"
+				:parentId="commentData.id"
 				@editReply="
 					(data) =>
 						$emit('editReply', {
