@@ -6,7 +6,6 @@
 			:key="comment.id"
 			@addNewReply="addNewReply"
 			@delete-reply="deleteReply"
-			@delete-comment="deleteComment"
 			@editComment="editComment"
 			@editReply="editReply"
 			@replyToReply="addNewReply"
@@ -14,7 +13,7 @@
 		/>
 	</div>
 
-	<AddNewCommentForm @createComment="createComment" />
+	<AddNewCommentForm />
 </template>
 
 <script>
@@ -29,52 +28,7 @@ export default {
 		this.commentsStore.getComments();
 	},
 	methods: {
-		createComment(data) {
-			fetch(
-				"https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments.json",
-				{
-					method: "POST",
-					body: JSON.stringify(data),
-					headers: {
-						"Content-type": "application/json; charset=UTF-8",
-					},
-				}
-			)
-				.then((res) => res.json())
-				.then(({ name }) => {
-					this.comments[name] = { ...data, id: name };
-					fetch(
-						"https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/" +
-							name +
-							".json",
-						{
-							method: "PATCH",
-							body: JSON.stringify({ id: name }),
-							headers: {
-								"Content-type":
-									"application/json; charset=UTF-8",
-							},
-						}
-					).catch((e) => console.log(e));
-				})
-				.catch((e) => console.log(e));
-		},
-		deleteComment(id) {
-			fetch(
-				"https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/" +
-					id +
-					".json",
-				{
-					method: "DELETE",
-					headers: {
-						"Content-type": "application/json; charset=UTF-8",
-					},
-				}
-			).catch((e) => console.log(e));
-			setTimeout(() => {
-				delete this.comments[id];
-			}, 1000);
-		},
+		deleteComment(id) {},
 		addNewReply(commentId, replyData) {
 			fetch(
 				`https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/${commentId}/replies.json`,

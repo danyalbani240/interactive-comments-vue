@@ -267,8 +267,11 @@
 import Reply from "./Reply.vue";
 import EditModal from "./EditModal.vue";
 import ReplyModal from "./ReplyModal.vue";
+import { mapStores } from "pinia";
+import { useCommentsStore } from "../stores/comments";
 export default {
 	components: { Reply, EditModal, ReplyModal },
+
 	data() {
 		return {
 			replyBoxShow: false,
@@ -303,6 +306,7 @@ export default {
 			};
 			return replyObject;
 		},
+		...mapStores(useCommentsStore),
 	},
 	methods: {
 		createReplyBox(media) {
@@ -351,7 +355,7 @@ export default {
 		},
 		handleDelete() {
 			this.$refs.userComment.classList.add("delete-animation");
-			this.$emit("deleteComment", this.commentData.id);
+			this.commentsStore.deleteComment(this.commentData.id);
 		},
 		createEditBox() {
 			this.editModalShow = true;

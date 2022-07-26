@@ -31,11 +31,16 @@
 </template>
 
 <script>
+import { mapStores } from "pinia";
+import { useCommentsStore } from "../stores/comments";
 export default {
 	data() {
 		return {
 			content: "",
 		};
+	},
+	computed: {
+		...mapStores(useCommentsStore),
 	},
 	methods: {
 		handleSubmit() {
@@ -52,8 +57,10 @@ export default {
 				},
 				createdAt: "1 day ago",
 			};
-			this.$emit("createComment", data);
+
 			this.content = "";
+
+			this.commentsStore.createNewComment(data);
 		},
 	},
 };
