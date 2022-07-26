@@ -323,29 +323,32 @@ export default {
 				if (data.trim() === "") {
 					return;
 				} else {
-					this.$emit("addNewReply", this.commentData.id, {
-						content: data,
-						createdAt: "1 day ago",
-						replyingTo: this.commentData.user.username,
-						score: 0,
-						user: {
-							image: {
-								png: "https://i.ibb.co/jWJfdwM/image-juliusomo.png",
-								webp: "https://i.ibb.co/cDyZ7yQ/image-juliusomo.webp",
+					this.commentsStore.createNewReply(
+						{
+							content: data,
+							createdAt: "1 day ago",
+							replyingTo: this.commentData.user.username,
+							score: 0,
+							user: {
+								image: {
+									png: "https://i.ibb.co/jWJfdwM/image-juliusomo.png",
+									webp: "https://i.ibb.co/cDyZ7yQ/image-juliusomo.webp",
+								},
+								username: "juliusomo",
 							},
-							username: "juliusomo",
 						},
-					});
+						this.commentData.id
+					);
 				}
 			} else {
 				if (this.pureReplyData.content === "") {
 					return;
 				} else {
-					this.$emit(
-						"addNewReply",
-						this.commentData.id,
-						this.pureReplyData
+					this.commentsStore.createNewReply(
+						this.pureReplyData,
+						this.commentData.id
 					);
+
 					this.replyText = `${
 						"@" + this.commentData.user.username.trim() + ","
 					}`;

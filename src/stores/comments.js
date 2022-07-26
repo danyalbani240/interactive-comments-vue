@@ -82,5 +82,45 @@ export const useCommentsStore = defineStore("comments", {
 				delete this.comments[id];
 			}, 1000);
 		},
+		createNewReply(replyData, commentId) {
+			fetch(
+				`https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/${commentId}/replies.json`,
+				{
+					method: "POST",
+					body: JSON.stringify(replyData),
+					headers: {
+						"Content-type": "application/json; charset=UTF-8",
+					},
+				}
+			)
+				.then((res) => res.json())
+				.then((data) => {
+					if (this.comments[commentId].replies !== undefined) {
+						this.comments[commentId].replies[data.name] = {
+							...replyData,
+							id: data.name,
+						};
+					} else {
+						this.comments[commentId].replies = {
+							[data.name]: {
+								...replyData,
+								id: data.name,
+							},
+						};
+					}
+					fetch(
+						`https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/${commentId}/replies/${data.name}.json`,
+						{
+							method: "PATCH",
+							body: JSON.stringify({ id: data.name }),
+							headers: {
+								"Content-type":
+									"application/json; charset=UTF-8",
+							},
+						}
+					).catch((e) => console.log(e));
+				})
+				.catch((e) => console.log(e));
+		},
 	},
 });
