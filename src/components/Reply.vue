@@ -13,12 +13,12 @@
 		>
 			<img
 				src="../assets/images/icon-plus.svg"
-				class="cursor-pointer"
+				class="cursor-not-allowed"
 				alt=""
 			/>
 			<span class="text-purple-700 font-bold">{{ replyData.score }}</span>
 			<img
-				class="cursor-pointer"
+				class="cursor-not-allowed"
 				src="../assets/images/icon-minus.svg"
 				alt=""
 			/>
@@ -56,14 +56,10 @@
 				<div
 					class="bg-purple-50 w-20 h-9 rounded flex items-center justify-evenly"
 				>
-					<img
-						src="../assets/images/icon-plus.svg"
-						class="cursor-pointer"
-						alt=""
-					/>
+					<img class="cursor-not-allowed" alt="" />
 					<span class="text-purple-700 font-bold">12</span>
 					<img
-						class="cursor-pointer"
+						class="cursor-not-allowed"
 						src="../assets/images/icon-minus.svg"
 						alt=""
 					/>
@@ -87,12 +83,12 @@
 		>
 			<img
 				src="../assets/images/icon-plus.svg"
-				class="cursor-pointer"
+				class="cursor-not-allowed"
 				alt=""
 			/>
 			<span class="text-purple-700 font-bold">{{ replyData.score }}</span>
 			<img
-				class="cursor-pointer"
+				class="cursor-not-allowed"
 				src="../assets/images/icon-minus.svg"
 				alt=""
 			/>
@@ -153,14 +149,14 @@
 				>
 					<img
 						src="../assets/images/icon-plus.svg"
-						class="cursor-pointer"
+						class="cursor-not-allowed"
 						alt=""
 					/>
 					<span class="text-purple-700 font-bold">
 						{{ replyData.score }}</span
 					>
 					<img
-						class="cursor-pointer"
+						class="cursor-not-allowed"
 						src="../assets/images/icon-minus.svg"
 						alt=""
 					/>
@@ -248,7 +244,7 @@ export default {
 					},
 				},
 			};
-			this.$emit("createNewReply", replyData);
+			this.commentsStore.createNewReply(replyData, this.parentId);
 			this.showReplyModal = false;
 		},
 	},

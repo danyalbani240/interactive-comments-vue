@@ -14,16 +14,14 @@
 			>
 				<img
 					src="../assets/images/icon-plus.svg"
-					class="cursor-pointer"
-					@click="$emit('changeScore', '+', commentData.id)"
+					class="cursor-not-allowed"
 				/>
 				<span class="text-purple-700 font-bold">{{
 					commentData.score
 				}}</span>
 				<img
-					class="cursor-pointer"
+					class="cursor-not-allowed"
 					src="../assets/images/icon-minus.svg"
-					@click="$emit('changeScore', '-', commentData.id)"
 				/>
 			</div>
 			<div
@@ -68,14 +66,14 @@
 					>
 						<img
 							src="../assets/images/icon-plus.svg"
-							class="cursor-pointer"
+							class="cursor-not-allowed"
 							alt=""
 						/>
 						<span class="text-purple-700 font-bold">{{
 							commentData.score
 						}}</span>
 						<img
-							class="cursor-pointer"
+							class="cursor-not-allowed"
 							src="../assets/images/icon-minus.svg"
 							alt=""
 						/>
@@ -128,16 +126,6 @@
 				:key="reply.id"
 				:replyData="reply"
 				:parentId="commentData.id"
-				@editReply="
-					(data) =>
-						$emit('editReply', {
-							...data,
-							parentId: commentData.id,
-						})
-				"
-				@createNewReply="
-					(data) => $emit('replyToReply', commentData.id, data)
-				"
 			/>
 		</div>
 	</div>

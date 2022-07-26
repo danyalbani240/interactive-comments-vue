@@ -4,7 +4,6 @@
 			v-for="comment in commentsStore.comments"
 			:commentData="comment"
 			:key="comment.id"
-			@changeScore="changeScore"
 		/>
 	</div>
 
@@ -21,14 +20,6 @@ export default {
 
 	mounted() {
 		this.commentsStore.getComments();
-	},
-	methods: {
-
-		changeScore(type, id) {
-			type === "-"
-				? (Number(this.comments[id].score) -= 1)
-				: (Number(this.comments[id].score) += 1);
-		},
 	},
 	computed: {
 		...mapStores(useCommentsStore),
