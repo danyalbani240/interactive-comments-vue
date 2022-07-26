@@ -225,10 +225,13 @@ export default {
 			this.commentsStore.deleteReply(this.replyData.id, this.parentId);
 		},
 		handleEdit(data) {
-			this.$emit("editReply", {
-				newContent: data,
-				id: this.replyData.id,
-			});
+			this.commentsStore.editReply(
+				{
+					newContent: data,
+					id: this.replyData.id,
+				},
+				this.parentId
+			);
 			this.showEditModal = false;
 		},
 		handleReply(replyContent) {

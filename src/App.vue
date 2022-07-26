@@ -4,7 +4,6 @@
 			v-for="comment in commentsStore.comments"
 			:commentData="comment"
 			:key="comment.id"
-			@editReply="editReply"
 			@changeScore="changeScore"
 		/>
 	</div>
@@ -24,24 +23,11 @@ export default {
 		this.commentsStore.getComments();
 	},
 	methods: {
-		editReply(data) {
-			this.comments[data.parentId].replies[data.id].content =
-				data.newContent;
-			fetch(
-				`https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/${data.parentId}/replies/${data.id}.json`,
-				{
-					method: "PATCH",
-					body: JSON.stringify({ content: data.newContent }),
-					headers: {
-						"Content-type": "application/json; charset=UTF-8",
-					},
-				}
-			).catch((e) => console.log(e));
-		},
+
 		changeScore(type, id) {
 			type === "-"
-				? (this.comments[id].score -= 1)
-				: (this.comments[id].score += 1);
+				? (Number(this.comments[id].score) -= 1)
+				: (Number(this.comments[id].score) += 1);
 		},
 	},
 	computed: {

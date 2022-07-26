@@ -150,5 +150,18 @@ export const useCommentsStore = defineStore("comments", {
 				})
 				.catch((e) => console.log(e));
 		},
+		editReply(data, parentId) {
+			this.comments[parentId].replies[data.id].content = data.newContent;
+			fetch(
+				`https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/${parentId}/replies/${data.id}.json`,
+				{
+					method: "PATCH",
+					body: JSON.stringify({ content: data.newContent }),
+					headers: {
+						"Content-type": "application/json; charset=UTF-8",
+					},
+				}
+			).catch((e) => console.log(e));
+		},
 	},
 });
