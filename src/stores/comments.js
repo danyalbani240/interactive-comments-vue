@@ -122,6 +122,19 @@ export const useCommentsStore = defineStore("comments", {
 				})
 				.catch((e) => console.log(e));
 		},
+		editComment(newContent, commentId) {
+			this.comments[commentId].content = newContent;
+			fetch(
+				`https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/${commentId}.json`,
+				{
+					method: "PATCH",
+					body: JSON.stringify({ content: newContent }),
+					headers: {
+						"Content-type": "application/json; charset=UTF-8",
+					},
+				}
+			).catch((e) => console.log(e));
+		},
 		deleteReply(replyId, commentId) {
 			fetch(
 				`https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments/${commentId}/replies/${replyId}.json`,

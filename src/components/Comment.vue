@@ -362,7 +362,7 @@ export default {
 			this.editModalShow = true;
 		},
 		handleEdit(data) {
-			this.$emit("editComment", data, this.commentData.id);
+			this.commentsStore.editComment(data, this.commentData.id);
 			this.editModalShow = false;
 		},
 	},
