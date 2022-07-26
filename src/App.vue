@@ -1,7 +1,7 @@
 <template>
 	<div class="mx-auto flex flex-col justify-center items-center">
 		<Comment
-			v-for="comment in comments"
+			v-for="comment in commentsStore.comments"
 			:commentData="comment"
 			:key="comment.id"
 			@addNewReply="addNewReply"
@@ -13,44 +13,20 @@
 			@changeScore="changeScore"
 		/>
 	</div>
+
 	<AddNewCommentForm @createComment="createComment" />
 </template>
 
 <script>
 import Comment from "./components/Comment.vue";
 import AddNewCommentForm from "./components/AddNewCommentForm.vue";
+import { mapStores } from "pinia";
+import { useCommentsStore } from "./stores/comments";
 export default {
 	components: { Comment, AddNewCommentForm },
-	data() {
-		return {
-			comments: [],
-		};
-	},
+
 	mounted() {
-		fetch(
-			"https://interactive-comments-70a95-default-rtdb.firebaseio.com/comments.json"
-		)
-			.then((res) => res.json())
-			.then((res) => {
-				let comments = Object.values(res);
-				let convertedComments = {};
-				for (const comment of comments) {
-					if (
-						comment.replies !== undefined &&
-						Array.isArray(comment.replies)
-					) {
-						let convertedComment;
-						convertedComment = {
-							...comment,
-							replies: Object.assign({}, comment.replies),
-						};
-						convertedComments[comment.id] = convertedComment;
-					} else {
-						convertedComments[comment.id] = comment;
-					}
-				}
-				this.comments = convertedComments;
-			});
+		this.commentsStore.getComments();
 	},
 	methods: {
 		createComment(data) {
@@ -186,6 +162,9 @@ export default {
 				? (this.comments[id].score -= 1)
 				: (this.comments[id].score += 1);
 		},
+	},
+	computed: {
+		...mapStores(useCommentsStore),
 	},
 };
 </script>
