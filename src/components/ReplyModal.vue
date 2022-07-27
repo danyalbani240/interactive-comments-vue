@@ -32,6 +32,7 @@
 
 <script>
 export default {
+	emits: ["handleReply"],
 	data() {
 		return {
 			replyContent: "",
