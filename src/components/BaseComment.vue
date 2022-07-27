@@ -36,6 +36,7 @@
 					<span class="text-sm">{{ commentData.createdAt }}</span>
 					<div
 						@click="createReplyBox('desktop')"
+						data-test="reply-desktop"
 						class="cursor-pointer flex-1 text-right hidden md:block reply-el"
 						:class="{
 							'text-purple-700': !replyBoxShow,

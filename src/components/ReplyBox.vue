@@ -3,6 +3,7 @@
 		@submit.prevent="$emit('handleReply')"
 		v-show="replyBoxShow"
 		class="bg-white py-4 mx-auto rounded flex w-full mt-5 items-center max-w-3xl"
+		data-test="reply-box"
 	>
 		<img
 			class="w-9 h-9 mx-auto"
