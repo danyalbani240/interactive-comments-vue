@@ -34,7 +34,10 @@ export default {
 		modelValue: {
 			type: String,
 		},
-		replyBoxShow: { default: false, type: Boolean },
+		replyBoxShow: {
+			default: false,
+			type: Boolean,
+		},
 	},
 };
 </script>
