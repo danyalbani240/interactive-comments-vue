@@ -91,32 +91,11 @@
 				</div>
 			</div>
 		</div>
-		<form
-			@submit.prevent="handleReply"
-			v-show="replyBoxShow"
-			class="bg-white py-4 mx-auto rounded flex w-full mt-5 items-center max-w-3xl"
-		>
-			<img
-				class="w-9 h-9 mx-auto"
-				src="../assets/images/avatars/image-juliusomo.png"
-				alt="account owner image"
-			/>
-			<textarea
-				name="reply"
-				class="rounded border-2 w-10/12 mx-auto border-r-gray-400 resize-none outline-none px-2 focus:border-gray-600 py-2"
-				data-test="reply-value"
-				id=""
-				cols="20"
-				rows="4"
-				v-model="replyText"
-			></textarea>
-
-			<button
-				class="text-white bg-purple-700 rounded px-4 py-2 text-sm h-10 font-bold mx-auto send-button"
-			>
-				Send
-			</button>
-		</form>
+		<ReplyBox
+			@handleReply="handleReply"
+			v-model="replyText"
+			:replyBoxShow="replyBoxShow"
+		/>
 		<div
 			v-if="commentData.replies !== undefined"
 			class="flex flex-col comments-container border-l-2 border-gray-300 pl-5 mt-5"
@@ -139,8 +118,9 @@ import ReplyModal from "./ReplyModal.vue";
 import UserComment from "./UserComment.vue";
 import { mapStores } from "pinia";
 import { useCommentsStore } from "../stores/comments";
+import ReplyBox from "./ReplyBox.vue";
 export default {
-	components: { UserComment, Reply, EditModal, ReplyModal },
+	components: { UserComment, Reply, EditModal, ReplyModal, ReplyBox },
 
 	data() {
 		return {
