@@ -3,7 +3,7 @@
 		<ReplyModal
 			@submitModal="(data) => handleReply(data, 'Modal')"
 			@cancel="replyModalShow = false"
-			v-show="replyModalShow"
+			v-if="replyModalShow"
 		/>
 		<div class="flex items-center bg-white rounded">
 			<div

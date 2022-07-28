@@ -1,7 +1,7 @@
-import { describe, expect, it, afterEach, beforeEach } from "vitest";
+import { describe, expect, it, afterEach, beforeEach, test } from "vitest";
 import { mount } from "@vue/test-utils";
 import BaseComment from "../components/BaseComment.vue";
-const commentData = {
+let commentData = {
 	content:
 		"Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.",
 	createdAt: "1 month ago",
@@ -46,5 +46,14 @@ describe("BaseComment", () => {
 		await button.trigger("click");
 		expect(replyBox.isDisabled()).toBe(false);
 		expect(button.text()).toBe("Reply");
+	});
+	test("replyBox By default should not exist ", () => {
+		const replyBox = wrapper.find('[data-test="reply-box"]');
+
+		expect(wrapper.find(replyBox).exists()).toBe(false);
+	});
+	test("replyModal By default Should not exist", () => {
+		const replyModal = wrapper.find('[data-test="reply-Modal"]');
+		expect(replyModal.exists()).toBe(false);
 	});
 });
