@@ -10,6 +10,10 @@ describe("replyBox", () => {
 	afterEach(() => {
 		wrapper.unmount();
 	});
+	it("by default replyBoxShow Prop Should be false", () => {
+		expect(wrapper.isVisible()).toBe(false);
+		expect;
+	});
 	it("should be shown if the replyBoxShow Prop is True", async () => {
 		await wrapper.setProps({
 			replyBoxShow: true,
@@ -35,7 +39,7 @@ describe("replyBox", () => {
 		await wrapper.get("form").trigger("submit");
 		expect(wrapper.isVisible()).toBe(false);
 	});
-	it("should emit handleReply event", async () => {
+	it("should emit handleReply event to parent Component", async () => {
 		await wrapper.setProps({
 			replyBoxShow: true,
 		});
