@@ -39,8 +39,9 @@ export default {
 	},
 	methods: {
 		handleSubmit() {
-			this.replyText = "";
 			this.$emit("handleReply", this.replyText);
+
+			this.replyText = "";
 		},
 	},
 };
