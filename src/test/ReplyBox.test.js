@@ -10,41 +10,14 @@ describe("replyBox", () => {
 	afterEach(() => {
 		wrapper.unmount();
 	});
-	it("by default replyBoxShow Prop Should be false", () => {
-		expect(wrapper.isVisible()).toBe(false);
-		expect;
-	});
-	it("should be shown if the replyBoxShow Prop is True", async () => {
-		await wrapper.setProps({
-			replyBoxShow: true,
-		});
-		expect(wrapper.isVisible()).toBe(true);
-	});
-	it("shouldn't be shown if the replyBoxShow Prop is False", async () => {
-		await wrapper.setProps({
-			replyBoxShow: false,
-		});
-		expect(wrapper.isVisible()).toBe(false);
-	});
-	it("should set user's name to the textarea", async () => {
-		const userName = "Danyal";
-		await wrapper.setProps({
-			modelValue: "@" + userName,
-		});
-		const textArea = wrapper.get("textarea");
 
-		expect(textArea.wrapperElement._value).include(userName);
-	});
-	it("should not be visible after closing submitting the form", async () => {
-		await wrapper.get("form").trigger("submit");
-		expect(wrapper.isVisible()).toBe(false);
-	});
-	it("should emit handleReply event to parent Component", async () => {
-		await wrapper.setProps({
-			replyBoxShow: true,
-		});
+	it("should emit handleReply event to parent Component with the text", async () => {
+		const textArea = wrapper.find("textarea");
+		const value = "yes it's good";
+		await textArea.setValue(value);
 		await wrapper.get("form").trigger("submit");
 		const handleReplyEvent = wrapper.emitted("handleReply");
 		expect(handleReplyEvent).toHaveLength(1);
+		expect(handleReplyEvent[0][0]).toBe(value);
 	});
 });

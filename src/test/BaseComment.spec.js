@@ -34,24 +34,17 @@ describe("BaseComment", () => {
 		expect(wrapper.text()).contain(commentData.score);
 		expect(wrapper.text()).contain(commentData.user.username);
 	});
-	it("should not be any replyBox till user Clicks", () => {
-		const button = wrapper.get('[data-test="reply-desktop"]');
-		const replyBox = wrapper.get('[data-test="reply-box"]');
 
-		expect(replyBox.isVisible()).toBe(false);
-	});
 	it("should make replyBoxShow Boolean true after Clicking on reply and after clicking cancel it will be false", async () => {
-		const button = wrapper.get('[data-test="reply-desktop"]');
-		const replyBox = wrapper.get('[data-test="reply-box"]');
+		const button = wrapper.find('[data-test="reply-desktop"]');
 		//first time clicking it shows the ReplyBox and the text of button switch to cancel
 		await button.trigger("click");
+		const replyBox = wrapper.find('[data-test="reply-box"]');
 		expect(button.text()).toBe("Cancel");
 		expect(replyBox.isVisible()).toBe(true);
-		expect(wrapper.vm.$data.replyBoxShow).toBe(true);
 		// expect to close it after the clicking again
 		await button.trigger("click");
-		expect(replyBox.isVisible()).toBe(false);
-		expect(wrapper.vm.$data.replyBoxShow).toBe(false);
+		expect(replyBox.isDisabled()).toBe(false);
 		expect(button.text()).toBe("Reply");
 	});
 });
