@@ -89,11 +89,7 @@
 				</div>
 			</div>
 		</div>
-		<ReplyBox
-			@handleReply="handleReply"
-			v-model="replyText"
-			:replyBoxShow="replyBoxShow"
-		/>
+		<ReplyBox @handleReply="handleReply" :replyBoxShow="replyBoxShow" />
 		<div
 			v-if="commentData.replies !== undefined"
 			class="flex flex-col comments-container border-l-2 border-gray-300 pl-5 mt-5"
@@ -126,7 +122,6 @@ export default {
 			replyBoxShow: false,
 			replyModalShow: false,
 			editModalShow: false,
-			replyText: `${"@" + this.commentData.user.username.trim() + ","}`,
 		};
 	},
 	props: {
@@ -135,12 +130,19 @@ export default {
 		},
 	},
 	computed: {
-		pureReplyData() {
-			let text = this.replyText.split(",");
-			text.shift();
-
-			const replyObject = {
-				content: text.join(" "),
+		...mapStores(useCommentsStore),
+	},
+	methods: {
+		createReplyBox(media) {
+			if (media === "desktop") {
+				this.replyBoxShow = !this.replyBoxShow;
+			} else {
+				this.replyModalShow = !this.replyModalShow;
+			}
+		},
+		createReplyData(content) {
+			return {
+				content,
 				createdAt: "1 day ago",
 				replyingTo: this.commentData.user.username,
 				score: 0,
@@ -152,19 +154,7 @@ export default {
 					username: "juliusomo",
 				},
 			};
-			return replyObject;
 		},
-		...mapStores(useCommentsStore),
-	},
-	methods: {
-		createReplyBox(media) {
-			if (media === "desktop") {
-				this.replyBoxShow = !this.replyBoxShow;
-			} else {
-				this.replyModalShow = !this.replyModalShow;
-			}
-		},
-
 		handleReply(data, Media) {
 			this.replyModalShow = false;
 			if (Media === "Modal") {
@@ -172,36 +162,20 @@ export default {
 					return;
 				} else {
 					this.commentsStore.createNewReply(
-						{
-							content: data,
-							createdAt: "1 day ago",
-							replyingTo: this.commentData.user.username,
-							score: 0,
-							user: {
-								image: {
-									png: "https://i.ibb.co/jWJfdwM/image-juliusomo.png",
-									webp: "https://i.ibb.co/cDyZ7yQ/image-juliusomo.webp",
-								},
-								username: "juliusomo",
-							},
-						},
+						this.createReplyData(data),
 						this.commentData.id
 					);
 				}
 			} else {
-				if (this.pureReplyData.content === "") {
-					return;
-				} else {
-					this.commentsStore.createNewReply(
-						this.pureReplyData,
-						this.commentData.id
-					);
+				this.commentsStore.createNewReply(
+					this.createReplyData(data),
+					this.commentData.id
+				);
 
-					this.replyText = `${
-						"@" + this.commentData.user.username.trim() + ","
-					}`;
-					this.replyBoxShow = !this.replyBoxShow;
-				}
+				this.replyText = `${
+					"@" + this.commentData.user.username.trim() + ","
+				}`;
+				this.replyBoxShow = !this.replyBoxShow;
 			}
 		},
 	},

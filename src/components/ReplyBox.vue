@@ -1,6 +1,6 @@
 <template>
 	<form
-		@submit.prevent="$emit('handleReply')"
+		@submit.prevent="handleSubmit"
 		v-show="replyBoxShow"
 		class="bg-white py-4 mx-auto rounded flex w-full mt-5 items-center max-w-3xl"
 		data-test="reply-box"
@@ -17,8 +17,7 @@
 			id=""
 			cols="20"
 			rows="4"
-			:value="modelValue"
-			@input="$emit('update:modelValue', $event.target.value)"
+			v-model="replyText"
 		></textarea>
 
 		<button
@@ -30,13 +29,21 @@
 </template>
 <script>
 export default {
+	data() {
+		return {
+			replyText: ``,
+		};
+	},
+
 	props: {
-		modelValue: {
-			type: String,
-		},
 		replyBoxShow: {
 			default: false,
 			type: Boolean,
+		},
+	},
+	methods: {
+		handleSubmit() {
+			this.$emit("handleReply", this.replyText);
 		},
 	},
 };
