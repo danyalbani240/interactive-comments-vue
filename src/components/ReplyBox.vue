@@ -1,7 +1,6 @@
 <template>
 	<form
 		@submit.prevent="handleSubmit"
-		v-show="replyBoxShow"
 		class="bg-white py-4 mx-auto rounded flex w-full mt-5 items-center max-w-3xl"
 		data-test="reply-box"
 	>
@@ -12,12 +11,13 @@
 		/>
 		<textarea
 			name="reply"
-			class="rounded border-2 w-10/12 mx-auto border-r-gray-400 resize-none outline-none px-2 focus:border-gray-600 py-2"
+			class="rounded border-2 w-10/12 mx-auto border-r-gray-500 resize-none outline-none px-2 focus:border-gray-600 py-2"
 			data-test="reply-value"
 			id=""
 			cols="20"
 			rows="4"
 			v-model="replyText"
+			ref="textarea"
 		></textarea>
 
 		<button
@@ -34,15 +34,12 @@ export default {
 			replyText: ``,
 		};
 	},
-
-	props: {
-		replyBoxShow: {
-			default: false,
-			type: Boolean,
-		},
+	mounted() {
+		this.$refs.textarea.focus();
 	},
 	methods: {
 		handleSubmit() {
+			this.replyText = "";
 			this.$emit("handleReply", this.replyText);
 		},
 	},

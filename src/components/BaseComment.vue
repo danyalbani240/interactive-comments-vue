@@ -89,7 +89,7 @@
 				</div>
 			</div>
 		</div>
-		<ReplyBox @handleReply="handleReply" :replyBoxShow="replyBoxShow" />
+		<ReplyBox @handleReply="handleReply" v-if="replyBoxShow" />
 		<div
 			v-if="commentData.replies !== undefined"
 			class="flex flex-col comments-container border-l-2 border-gray-300 pl-5 mt-5"
@@ -172,9 +172,6 @@ export default {
 					this.commentData.id
 				);
 
-				this.replyText = `${
-					"@" + this.commentData.user.username.trim() + ","
-				}`;
 				this.replyBoxShow = !this.replyBoxShow;
 			}
 		},
