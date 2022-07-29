@@ -1,5 +1,6 @@
 <template>
 	<form
+		data-test="createComment"
 		@submit.prevent="handleSubmit"
 		class="bg-white py-4 mx-auto rounded flex flex-col w-11/12 mt-5 max-w-3xl add-comment-container"
 	>
