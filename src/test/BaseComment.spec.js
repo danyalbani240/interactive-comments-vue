@@ -50,7 +50,7 @@ describe("BaseComment", () => {
 	test("replyBox By default should not exist ", () => {
 		const replyBox = wrapper.find('[data-test="reply-box"]');
 
-		expect(wrapper.find(replyBox).exists()).toBe(false);
+		expect(replyBox.exists()).toBe(false);
 	});
 	test("replyModal By default Should not exist", () => {
 		const replyModal = wrapper.find('[data-test="reply-Modal"]');
