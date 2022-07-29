@@ -1,7 +1,5 @@
 <template>
-	<div v-if="commentsStore.comments.length === 0">
-		<Vue3Lottie :animationData="loader" :height="200" :width="200" />
-	</div>
+	<Loading v-if="commentsStore.comments.length === 0" />
 
 	<div v-else class="mx-auto flex flex-col justify-center items-center">
 		<Comment
@@ -16,18 +14,21 @@
 
 <script>
 import Comment from "./components/Comment.vue";
-import { Vue3Lottie } from "vue3-lottie";
-import "vue3-lottie/dist/style.css";
-import loader from "./assets/11473-loading-spinner.json";
+
 import AddNewCommentForm from "./components/AddNewCommentForm.vue";
 import { mapStores } from "pinia";
 import { useCommentsStore } from "./stores/comments";
+import { defineAsyncComponent } from "vue";
 export default {
-	components: { Comment, AddNewCommentForm, Vue3Lottie },
+	components: {
+		Comment,
+		AddNewCommentForm,
+		Loading: defineAsyncComponent(() => {
+			import("./components/Loading.vue");
+		}),
+	},
 	data() {
-		return {
-			loader,
-		};
+		return {};
 	},
 	mounted() {
 		setTimeout(() => {
