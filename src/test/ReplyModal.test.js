@@ -30,4 +30,16 @@ describe("replyModal", () => {
 		expect(submitModalEmit).toHaveLength(1);
 		expect(submitModalEmit[0][0]).toBe(replyText);
 	});
+	it("Should not send the data back when we click on send and textArea is emty", async () => {
+		const wrapper = mount(ReplyModal);
+		const textarea = wrapper.find("textarea");
+		const replyText = "";
+		await textarea.setValue(replyText);
+		const replyButton = wrapper.find('[data-test="reply-button"]');
+		expect(replyButton.exists()).toBe(true);
+		await replyButton.trigger("click");
+		const submitModalEmit = wrapper.emitted("submitModal");
+		// undefined because no emit has happend
+		expect(submitModalEmit).toBe(undefined);
+	});
 });
