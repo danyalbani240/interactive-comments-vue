@@ -3,6 +3,7 @@
 		ref="modal"
 		class="Modal fixed w-screen h-screen bg-black bg-opacity-40 z-10 left-0 top-0"
 		@click.self="$emit('closeModal')"
+		data-test="modal-bg"
 	>
 		<form
 			class="fixed z-10 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 md:w-6/12 h-44 bg-white rounded p-4 edit-reply-box"
@@ -32,6 +33,7 @@
 
 <script>
 export default {
+	emits: ["closeModal", "cancel", "submitModal"],
 	props: {
 		baseValue: {
 			type: String,
