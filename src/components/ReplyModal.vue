@@ -23,6 +23,7 @@
 				><button
 					class="text-white bg-purple-600 p-2 mt-2 send-edit cursor-pointer rounded"
 					@click="handleReply"
+					data-test="reply-button"
 				>
 					Reply
 				</button>
@@ -33,7 +34,7 @@
 
 <script>
 export default {
-	emits: ["handleReply", "cancel", "closeModal"],
+	emits: ["submitModal", "cancel", "closeModal"],
 	data() {
 		return {
 			replyContent: "",
