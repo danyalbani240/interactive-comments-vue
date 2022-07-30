@@ -33,7 +33,7 @@
 
 <script>
 export default {
-	emits: ["handleReply"],
+	emits: ["handleReply", "cancel", "closeModal"],
 	data() {
 		return {
 			replyContent: "",
