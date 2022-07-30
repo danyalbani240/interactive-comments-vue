@@ -52,6 +52,5 @@ describe("App", () => {
 		expect(store.getComments).toHaveBeenCalledTimes(1);
 		await flushPromises();
 		//Assert
-		console.log(wrapper.html());
 	});
 });
