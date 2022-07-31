@@ -20,7 +20,6 @@ describe("AddNewCommentForm", () => {
 		const store = useCommentsStore();
 
 		await flushPromises();
-		console.log(store.createNewComment);
 		expect(store.createNewComment).toHaveBeenCalledTimes(0);
 	});
 	it("should  send request or run any functions if comment is not epmty", async () => {
@@ -38,7 +37,6 @@ describe("AddNewCommentForm", () => {
 		const store = useCommentsStore();
 
 		await flushPromises();
-		console.log(store.createNewComment);
 		expect(store.createNewComment).toHaveBeenCalledTimes(1);
 	});
 });
