@@ -1,6 +1,9 @@
 import BaseReply from "../components/BaseReply.vue";
 import { describe, expect, it, vi } from "vitest";
 import { mount } from "@vue/test-utils";
+import { useCommentsStore } from "../stores/comments.js";
+import { createTestingPinia } from "@pinia/testing";
+import flushPromises from "flush-promises";
 const replyData = {
 	id: 1,
 	content:
@@ -72,5 +75,26 @@ describe("BaseReply", () => {
 			true
 		);
 		wrapper.unmount();
+	});
+	it("handleReply Method will call createNewReply and sends the data with him", async () => {
+		const wrapper = mount(BaseReply, {
+			props: {
+				replyData: replyData,
+				parentId: 1,
+			},
+			global: {
+				plugins: [
+					createTestingPinia({
+						createSpy: vi.fn,
+					}),
+				],
+			},
+		});
+		const store = useCommentsStore();
+		const repliedContent =
+			"Hi my name is Danyal Really Enjoy your comments";
+		await wrapper.componentVM.handleReply(repliedContent);
+		await flushPromises();
+		expect(store.createNewReply).toHaveBeenCalledTimes(1);
 	});
 });
