@@ -18,22 +18,18 @@ import Comment from "./components/Comment.vue";
 import AddNewCommentForm from "./components/AddNewCommentForm.vue";
 import { mapStores } from "pinia";
 import { useCommentsStore } from "./stores/comments";
-import { defineAsyncComponent } from "vue";
+import Loading from "./components/Loading.vue";
 export default {
 	components: {
 		Comment,
 		AddNewCommentForm,
-		Loading: defineAsyncComponent(() => {
-			import("./components/Loading.vue");
-		}),
+		Loading,
 	},
 	data() {
 		return {};
 	},
 	mounted() {
-		setTimeout(() => {
-			this.commentsStore.getComments();
-		}, 500);
+		this.commentsStore.getComments();
 	},
 	computed: {
 		...mapStores(useCommentsStore),
