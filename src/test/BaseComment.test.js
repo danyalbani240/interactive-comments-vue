@@ -52,8 +52,4 @@ describe("BaseComment", () => {
 
 		expect(replyBox.exists()).toBe(false);
 	});
-	test("replyModal By default Should not exist", () => {
-		const replyModal = wrapper.find('[data-test="reply-Modal"]');
-		expect(replyModal.exists()).toBe(false);
-	});
 });

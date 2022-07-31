@@ -34,6 +34,16 @@ describe("BaseReply", () => {
 		expect(html).contain(replyData.user.username);
 		expect(html).contain(replyData.user.image.png);
 	});
+	it("replyModal should not be Visible By Default", () => {
+		const wrapper = mount(BaseReply, {
+			props: {
+				replyData: replyData,
+				parentId: 1,
+			},
+		});
+		const replyModal = wrapper.find('[data-test="reply-Modal"');
+		expect(replyModal.isVisible()).toBe(false);
+	});
 	it("should open Reply Modal when clicking on Reply Button Desktop, and mobile", async () => {
 		const wrapper = mount(BaseReply, {
 			props: {
