@@ -49,8 +49,9 @@ describe("App", () => {
 		const store = useCommentsStore();
 
 		await store.getComments();
-		expect(store.getComments).toHaveBeenCalledTimes(1);
 		await flushPromises();
 		//Assert
+
+		expect(store.getComments).toHaveBeenCalledTimes(1);
 	});
 });

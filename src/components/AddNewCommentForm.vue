@@ -33,6 +33,7 @@
 
 <script>
 import { mapStores } from "pinia";
+import { toHandlers } from "vue";
 import { useCommentsStore } from "../stores/comments";
 export default {
 	data() {
@@ -45,23 +46,25 @@ export default {
 	},
 	methods: {
 		handleSubmit() {
-			const data = {
-				content: this.content,
-				score: 0,
-				replies: [],
-				user: {
-					username: "juliusomo",
-					image: {
-						png: "https://i.ibb.co/jWJfdwM/image-juliusomo.png",
-						webp: "https://i.ibb.co/cDyZ7yQ/image-juliusomo.webp",
+			if (this.content.trim() !== "") {
+				const data = {
+					content: this.content,
+					score: 0,
+					replies: [],
+					user: {
+						username: "juliusomo",
+						image: {
+							png: "https://i.ibb.co/jWJfdwM/image-juliusomo.png",
+							webp: "https://i.ibb.co/cDyZ7yQ/image-juliusomo.webp",
+						},
 					},
-				},
-				createdAt: "1 day ago",
-			};
+					createdAt: "1 day ago",
+				};
 
-			this.content = "";
+				this.content = "";
 
-			this.commentsStore.createNewComment(data);
+				this.commentsStore.createNewComment(data);
+			}
 		},
 	},
 };
