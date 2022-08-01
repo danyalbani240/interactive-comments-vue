@@ -70,4 +70,53 @@ describe("UserComment", () => {
 		expect(wrapper.classes()).contain("delete-animation");
 		expect(store.deleteComment).toHaveBeenCalledTimes(1);
 	});
+	it("should edit Content After Setting new Value By Edit Modal", async () => {
+		const wrapper = mount(UserComment, {
+			props: {
+				commentData,
+			},
+			global: {
+				plugins: [
+					createTestingPinia({
+						createSpy: vi.fn,
+					}),
+				],
+			},
+		});
+		const openEditModalButton = wrapper.find(".edit-button");
+		await openEditModalButton.trigger("click");
+		const editModal = wrapper.find('[data-test="modal-bg"]');
+		expect(editModal.exists()).toBe(true);
+		await editModal.find("textarea").setValue(commentData.content + "4");
+		await editModal.find(".send-edit").trigger("click");
+		const store = useCommentsStore();
+		await flushPromises();
+		// console.log(store.editComment);
+
+		expect(store.editComment).toHaveBeenCalledTimes(1);
+	});
+	it("should not edit Content After Setting new Value By Edit Modal", async () => {
+		const wrapper = mount(UserComment, {
+			props: {
+				commentData,
+			},
+			global: {
+				plugins: [
+					createTestingPinia({
+						createSpy: vi.fn,
+					}),
+				],
+			},
+		});
+		const openEditModalButton = wrapper.find(".edit-button");
+		await openEditModalButton.trigger("click");
+		const editModal = wrapper.find('[data-test="modal-bg"]');
+		expect(editModal.exists()).toBe(true);
+		await editModal.find("textarea").setValue(commentData.content);
+		await editModal.find(".send-edit").trigger("click");
+		const store = useCommentsStore();
+		await flushPromises();
+
+		expect(store.editComment).toHaveBeenCalledTimes(0);
+	});
 });
