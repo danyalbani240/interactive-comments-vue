@@ -9,6 +9,7 @@
     "test:unit": "vitest --environment jsdom"
   },
   "dependencies": {
+    "canvas": "^2.9.3",
     "pinia": "^2.0.17",
     "vue": "^3.2.25",
     "vue3-lottie": "^2.2.5"

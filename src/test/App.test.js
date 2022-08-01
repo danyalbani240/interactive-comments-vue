@@ -48,10 +48,8 @@ describe("App", () => {
 
 		const store = useCommentsStore();
 
-		await store.getComments();
 		await flushPromises();
 		//Assert
-
 		expect(store.getComments).toHaveBeenCalledTimes(1);
 	});
 });
