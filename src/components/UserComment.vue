@@ -141,10 +141,11 @@ export default {
 			this.$refs.userComment.classList.add("delete-animation");
 			this.commentsStore.deleteComment(this.commentData.id);
 		},
+		createEditBox() {
+			this.editModalShow = true;
+		},
 	},
-	createEditBox() {
-		this.editModalShow = true;
-	},
+
 	computed: {
 		...mapStores(useCommentsStore),
 	},
