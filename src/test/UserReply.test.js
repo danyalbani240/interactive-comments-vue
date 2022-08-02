@@ -56,4 +56,58 @@ describe("ReplyUser", () => {
 		expect(store.deleteReply).toHaveBeenCalledTimes(1);
 		expect(wrapper.classes()).contain("delete-animation");
 	});
+	it("should Edit the Data when Clicking on Edit Button and Open Edit Modal", async () => {
+		const wrapper = mount(UserReply, {
+			props: {
+				replyData: replyData,
+				parentId: 0,
+			},
+			global: {
+				plugins: [
+					createTestingPinia({
+						createSpy: vi.fn,
+					}),
+				],
+			},
+		});
+		const editButton = wrapper.find(".edit-button");
+		const editModal = wrapper.find('[data-test="modal-bg"]');
+		expect(editButton.exists()).toBe(true);
+		expect(editModal.exists()).toBe(true);
+		await editButton.trigger("click");
+		expect(editModal.isVisible()).toBe(true);
+		const textArea = editModal.find("textarea");
+		await textArea.setValue(replyData.content + "123");
+		await editModal.find(".send-edit").trigger("click");
+		const store = useCommentsStore();
+		await flushPromises();
+		expect(editModal.isVisible()).toBe(false);
+		expect(store.editReply).toHaveBeenCalledTimes(1);
+	});
+	it("should not Edit the Data when Clicking on Edit Button and content is not change", async () => {
+		const wrapper = mount(UserReply, {
+			props: {
+				replyData: replyData,
+				parentId: 0,
+			},
+			global: {
+				plugins: [
+					createTestingPinia({
+						createSpy: vi.fn,
+					}),
+				],
+			},
+		});
+		const editButton = wrapper.find(".edit-button");
+		const editModal = wrapper.find('[data-test="modal-bg"]');
+		expect(editButton.exists()).toBe(true);
+		expect(editModal.exists()).toBe(true);
+		await editButton.trigger("click");
+		expect(editModal.isVisible()).toBe(true);
+		const textArea = editModal.find("textarea");
+		await textArea.setValue(replyData.content);
+		await editModal.find(".send-edit").trigger("click");
+		await flushPromises();
+		expect(editModal.isVisible()).toBe(true);
+	});
 });
