@@ -49,7 +49,7 @@ describe("UserComment", () => {
 		await editButton.trigger("click");
 		expect(wrapper.find('[data-test="modal-bg"]').exists()).toBe(true);
 	});
-	it("should the Comment after Clicking on Delete Button", async () => {
+	it("should delete the Comment after Clicking on Delete Button", async () => {
 		const wrapper = mount(UserComment, {
 			props: {
 				commentData,
